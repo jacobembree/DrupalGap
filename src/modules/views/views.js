@@ -498,6 +498,7 @@ function views_embed_view(path, options) {
               var elem = document.getElementById(options.attributes.id);
               elem.parentElement.removeChild(elem);
             }
+            module_invoke_all("views_embed_view_success", path, options);
           }
           catch (error) {
             console.log('views_embed_view - success - ' + error);
