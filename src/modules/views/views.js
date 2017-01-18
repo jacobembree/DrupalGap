@@ -237,6 +237,9 @@ function views_exposed_form(form, form_state, options) {
             if (filter.options.vocabulary != '') {
               autocomplete.vid = taxonomy_vocabulary_get_vid_from_name(filter.options.vocabulary);
             }
+            if (form.arguments[0].exposed_data[filter.options.field]) {
+              element.default_value_label = element.default_value = form.arguments[0].exposed_data[filter.options.field];
+            }
             $.extend(element, autocomplete, true);
           }
           // User ID exposed filter.
@@ -251,6 +254,9 @@ function views_exposed_form(form, form_state, options) {
               label: 'name',
               filter: 'name'
             };
+            if (form.arguments[0].exposed_data[filter.options.field]) {
+              element.default_value_label = element.default_value = form.arguments[0].exposed_data[filter.options.field];
+            }
             $.extend(element, autocomplete, true);
           }
           else if (element.type == 'select') {
