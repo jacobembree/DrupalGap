@@ -117,7 +117,7 @@ function theme_autocomplete(variables) {
               selector: selector,
               default_value_label: variables.default_value_label
           })
-      }, id);
+      }, id + new Date().getTime()); // Give the ID uniqueness.
     }
 
     // Theme the list and add the js to it, then return the html.
