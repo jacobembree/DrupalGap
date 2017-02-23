@@ -1,4 +1,3 @@
-/*! drupalgap 2016-12-09 */
 // Initialize the drupalgap json object.
 var drupalgap = drupalgap || drupalgap_init(); // Do not remove this line.
 
@@ -1556,7 +1555,6 @@ function scrollToElement(selector, time, verticalOffset) {
   catch (error) { console.log('scrollToElement - ' + error); }
 }
 
-
 /**
  * Autocomplete global variables. Used to hold onto various global variables
  * needed for an autocomplete.
@@ -2034,7 +2032,6 @@ function _theme_autocomplete_set_default_value_label(options) {
     console.log('_theme_autocomplete_set_default_value_label - ' + error);
   }
 }
-
 /**
  * Given a block delta, this will return the corresponding
  * block from drupalgap.blocks.
@@ -2122,7 +2119,6 @@ function drupalgap_block_render(region, current_path, block_delta,
   }
   catch (error) { console.log('drupalgap_block_render - ' + error); }
 }
-
 
 /**
  * Converts a JSON object to an XML/HTML tag attribute string and returns the
@@ -2534,7 +2530,6 @@ function t(str) {
   ) { return drupalgap.locale[lang][str]; }
   return str;
 }
-
 
 /**
  * Given a form element, this will return true if access to the element is
@@ -3172,7 +3167,6 @@ function _drupalgap_form_element_items_widget_arguments(form, form_state,
   }
 }
 
-
 /**
  * Internal function used to dynamically add another element item to a form for
  * unlimited value fields.
@@ -3438,7 +3432,6 @@ function drupalgap_form_id_local_storage_key(form_id) {
     return 'drupalgap_form_' + form_id;
 }
 
-
 /**
  * Given a form id, this will return the form JSON object assembled by the
  * form's call back function. If the form fails to load, this returns false.
@@ -3617,7 +3610,6 @@ function _drupalgap_form_load_set_element_defaults(form, language) {
   }
   catch (error) { console.log('_drupalgap_form_elements_set_defaults - ' + error); }
 }
-
 /**
  * Optionally use this function as an HTML DOM onkeypress handler, and it will
  * attempt to listen for the enter key being pressed and submit the form at that
@@ -3950,7 +3942,6 @@ function _drupalgap_form_submit_response_errors(form, form_state, xhr, status,
   }
 }
 
-
 /**
  * Themes a checkbox input.
  * @param {Object} variables
@@ -4261,7 +4252,6 @@ function theme_textarea(variables) {
   }
   catch (error) { console.log('theme_textarea - ' + error); }
 }
-
 
 // Holds onto any query string during the page go process.
 var _drupalgap_goto_query_string = null;
@@ -4693,7 +4683,6 @@ $(window).on('navigate', function(event, data) {
     }
 
 });
-
 
 /**
  * Execute the page callback associated with the current path and return its
@@ -5269,7 +5258,6 @@ function drupalgap_menu_router_build_menu_item_relationships(path, menu_item) {
   }
 }
 
-
 /**
  * Show the jQueryMobile loading message.
  * @see http://stackoverflow.com/a/16277865/763010
@@ -5511,7 +5499,6 @@ function drupalgap_toast(html) {
 function drupalgap_toast_is_shown() {
   return drupalgap.toast.shown;
 }
-
 /**
  * This will return the query string arguments for the page. You may optionally
  * pass in a key to get its value, pass in a key then a value to set the key
@@ -5883,7 +5870,6 @@ function drupalgap_render_page() {
   }
   catch (error) { console.log('drupalgap_render_page - ' + error); }
 }
-
 /**
  * Given a region, this renders it and all the blocks in it. The blocks are
  * specified in the settings.js file, they are bundled under a region, which in
@@ -6174,7 +6160,6 @@ function drupalgap_panel_id(key) {
   catch (error) { console.log('drupalgap_panel_id - ' + error); }
 }
 
-
 function drupalgap_render(content) {
 
   var output_type = $.type(content);
@@ -6280,7 +6265,6 @@ function drupalgap_render(content) {
   // return it.
   return html;
 }
-
 /**
  * Returns the path to the current DrupalGap theme, false otherwise.
  * @return {String|Boolean}
@@ -6828,7 +6812,6 @@ function theme_jqm_table(variables) {
   catch (error) { console.log('theme_jqm_table - ' + error); }
 }
 
-
 /**
  * An interal callback used to handle the setting of the page title during the
  * pageshow event.
@@ -6900,7 +6883,6 @@ function _drupalgap_page_title_pageshow_success(title) {
   }
 }
 
-
 function theme_jqm_grid(variables) {
   if (!variables.items || !variables.items.length) { return ''; }
 
@@ -6971,574 +6953,6 @@ function jqm_grid_set_item_row_class(open_row, className) {
   if (className) { openRow = openRow.replace('ui-block', className); }
   return openRow;
 }
-
-/**
- * When a form submission for an entity is assembling the entity json object to
- * send to the server, some form element fields need to be assembled in unique
- * ways to match the entity's structure in Drupal. Modules that implement fields
- * can use this hook to properly assemble the item value (by delta) and return
- * it.
- * @param {Object} entity_type
- * @param {String} bundle
- * @param {String} form_state_value
- * @param {Object} field
- * @param {Object} instance
- * @param {String} langcode
- * @param {Number} delta
- * @param {Object} field_key Set the 'value' string property on this object to
- *                           use a custom property name on the field value.
- *                           Defaults to 'value'.
- *                           Set the 'use_key' boolean property on this object
- *                           to false to not use a key when assembling the
- *                           result into the field. Defaults to true.
- *                           Set the 'use_wrapper' boolean property on this
- *                           object to false to not use the default wrapper
- *                           placed around the result object. Defaults to true.
- *                           Set the 'use_delta' boolean property to false when
- *                           a delta value is not needed. Defaults to true.
- * @param {Object} form
- *
- * @return {*}
- */
-function hook_assemble_form_state_into_field(entity_type, bundle,
-  form_state_value, field, instance, langcode, delta, field_key, form) {
-  try {
-    // Listed below are example use cases. Each show how to assemble the result,
-    // and what the resulting field object will look like when assembled by the
-    // DrupalGap Forms API. We'll use a field machine name of 'field_my_field'
-    // in all of the examples.
-    
-    // Optional helpful values.
-    // Grab the form element's name, the form id, and the element's id.
-    // var element_name = field_key.name;
-    // var form_id = field_key.form_id;
-    // var element_id = field_key.element_id;
-
-    // Example 1 - Here's a simple example using all the defaults.
-    var result = {
-      foo: 'bar'
-    };
-    return result;
-    // This in turn gets assembled by the DG FAPI.
-    // {
-    //   /* ... other entity values and fields ... */
-    //   field_my_field: {
-    //     und: [
-    //       { value: { foo: "bar" } }
-    //     ]
-    //   }
-    // }
-    
-    // Example 2 - Setting the 'value' property.
-    field_key.value = "foo";
-    var result = "bar";
-    return result;
-    // {
-    //   /* ... other entity values and fields ... */
-    //   field_my_field: {
-    //     und: [
-    //       { foo: "bar" }
-    //     ]
-    //   }
-    // }
-    
-    // Example 3 - Setting the 'use_key' to false.
-    field_key.use_key = false;
-    var result = "bar";
-    return result;
-    // {
-    //   /* ... other entity values and fields ... */
-    //   field_my_field: {
-    //     und: ["bar"]
-    //   }
-    // }
-    
-    // Example 4 - Setting the 'use_delta' to false.
-    field_key.use_delta = false;
-    var result = "bar";
-    return result;
-    // {
-    //   /* ... other entity values and fields ... */
-    //   field_my_field: {
-    //     und: ["bar"]
-    //   }
-    // }
-    
-    // Example 5 - Setting the 'use_delta' and 'use_wrapper' to false.
-    field_key.use_delta = false;
-    field_key.use_wrapper = false;
-    var result = "bar";
-    return result;
-    // {
-    //   /* ... other entity values and fields ... */
-    //   field_my_field: {
-    //     und: "bar"
-    //   }
-    // }
-  }
-  catch (error) {
-    console.log('hook_assemble_form_state_into_field - ' + error);
-  }
-}
-
-/**
- * When the app is first loading up, DrupalGap checks to see if the device has a connection, if it does then this hook
- * is called. If DrupalGap doesn't have a connection, then hook_device_offline() is called. Implementations of
- * hook_deviceready() need to return true if they'd like DrupalGap to continue, or return false if you'd like DrupalGap
- * to NOT continue. If DrupalGap continues, it will perform a System Connect resource call then go to the App's front
- * page. This is called during DrupalGap's "deviceready" implementation for PhoneGap. Note, the Drupal.user object is
- * not initialized at this point, and will always be an anonymous user.
- */
-function hook_deviceready() {}
-
-/**
- * When someone calls drupalgap_has_connection(), this hook has an opportunity to set drupalgap.online to true or false.
- * The value of drupalgap.online is returned to anyone who calls drupalgap_has_connection(), including DrupalGap core.
- */
-function hook_device_connection() {
-
-  // If it is Saturday, take the app offline and force the user to go outside and play.
-  var d = new Date();
-  if (d.getDay() == 6) { drupalgap.online = false; }
-
-}
-
-/**
- * Called during app startup if the device does not have a connection. Note, the Drupal.user object is ot initialized at
- * this point, and will always be an anonymous user.
- */
-function hook_device_offline() {
-
-  // Even though we're offline, let's just go to the front page.
-  drupalgap_goto('');
-
-}
-
-/**
- * Take action when the user presses the "back" button. This includes the soft,
- * hardware and browser back buttons. The browser back button is only available
- * in web app mode, the hardware back button is typically only on compiled
- * Android devices, whereas the soft back button actually appears within the UX
- * of the app.
- * @param {String} from
- * @param {String} to
- * @see http://docs.drupalgap.org/7/Widgets/Buttons/Back_Button
- */
-function hook_drupalgap_back(from, to) {
-
-  // When the user navigates from the front page to the login page, show them
-  // a message (a toast).
-  if (from == drupalgap.settings.front && to == 'user/login') {
-    drupalgap_toast('Please login to continue');
-  }
-
-}
-
-/**
- * Each time a page is navigated to within the app, drupalgap_goto() is called.
- * Use this hook to do some preprocessing before drupalgap_goto() gets started.
- * @param {String} path The current page path.
- */
-function hook_drupalgap_goto_preprocess(path) {
-  try {
-    // Pre process the front page.
-    if (path == drupalgap.settings.front) {
-      drupalgap_alert(t('Preprocessing the front page!'));
-    }
-  }
-  catch (error) {
-    console.log('hook_drupalgap_goto_preprocess - ' + error);
-  }
-}
-
-/**
- * Each time a page is navigated to within the app, drupalgap_goto() is called.
- * Use this hook to do some post processing after drupalgap_goto() has finished.
- * @param {String} path The current page path.
- */
-function hook_drupalgap_goto_post_process(path) {
-  try {
-    // Post process the front page.
-    if (path == drupalgap.settings.front) {
-      drupalgap_alert(t('Post processing the front page!'));
-    }
-  }
-  catch (error) {
-    console.log('hook_drupalgap_goto_post_process - ' + error);
-  }
-}
-
-/**
- * Called after a successful services API call to a Drupal site. Do not call
- * any services from within your implementation, you may run into an infinite
- * loop in your code. See http://drupalgap.org/project/force_authentication for
- * example usage.
- * @deprecated - use hook_services_postprocess() instead.
- */
-function hook_services_success(url, data) { }
-
-/**
- * A hook used to declare custom block information.
- */
-function hook_block_info() {}
-
-/**
- * A hook used to render custom blocks.
- */
-function hook_block_view(delta, region) {
-}
-
-/**
- * A hook used to handle a 404 in the app.
- */
-function hook_404(router_path) {}
-
-/**
- * Implements hook_entity_pre_build_content().
- */
-function hook_entity_pre_build_content(entity, entity_type, bundle) {
-
-  // Change some weights on nodes with a date field.
-  if (entity_type == 'node' && typeof entity.field_date !== 'undefined') {
-    entity.body.weight = 0;
-    entity.field_date.weight = 1;
-  }
-}
-
-/**
- * Implements hook_entity_post_build_content().
- */
-function hook_entity_post_build_content(entity, entity_type, bundle) {
-
-}
-
-/**
- * Implements hook_entity_pre_render_content().
- * Called before drupalgap_entity_render_content() assembles the entity.content
- * string. Use this to make modifications to an entity before its' content is rendered.
- */
-function hook_entity_pre_render_content(entity, entity_type, bundle) {
-  try {
-
-    // Remove access to the date field on all nodes.
-    if (entity_type == 'node' && typeof entity.field_date !== 'undefined') {
-      entity.field_date.access = false;
-    }
-
-  }
-  catch (error) {
-    console.log('hook_entity_pre_render_content - ' + error);
-  }
-}
-
-/**
- * Called after drupalgap_entity_render_content() assembles the entity.content
- * string. Use this to make modifications to the HTML output of the entity's
- * content before it is displayed.
- */
-function hook_entity_post_render_content(entity, entity_type, bundle) {
-  try {
-    if (entity.type == 'article') {
-      entity.content += '<p>' + t('Example text on every article!') + '</p>';
-    }
-  }
-  catch (error) {
-    console.log('hook_entity_post_render_content - ' + error);
-  }
-}
-
-/**
- * Implements hook_entity_view_alter().
- * Called immediately before a page is rendered and injected into its waiting
- * container. Use this hook to modifications to the build object by adding or
- * editing render arrays (widgets) on the build object.
- */
-function hook_entity_view_alter(entity_type, entity_id, mode, build) {
-  try {
-    if (entity_type == 'user' && mode == 'view') {
-      if (entity_id == Drupal.user.uid) {
-        build['foo'] = { markup: '<p>Extra stuff when viewing own user profile...</p>' };
-        build['volume'] = {
-          theme: 'range',
-          attributes: {
-            min: '0',
-            max: '11',
-            value: '11',
-            'data-theme': 'b'
-          }
-        };
-      }
-      else {
-        build['bar'] = { markup: '<p>Viewing some other profile...</p>' };
-      }
-    }
-  }
-  catch (error) { console.log('hook_entity_view_alter - ' + error); }
-}
-
-/**
- * Implements hook_field_info_instance_add_to_form().
- * Used by modules that provide custom fields to operate on a form or its
- * elements before the form gets saved to local storage. This allows extra
- * data be attached to the form that way things like hook_field_widget_form(),
- * which takes place at render time, can have access to any extra data it may
- * need.
- * @param {String} entity_type
- * @param {String} bundle
- * @param {Object} form
- * @param {Object} entity
- * @param {Object} element
- */
-function hook_field_info_instance_add_to_form(entity_type, bundle, form, entity, element) {
-  try {
-    // Attach a value_callback to the element so we can manually build its form
-    // state value.
-    element.value_callback = 'example_field_value_callback';
-  }
-  catch (error) { console.log('hook_field_info_instance_add_to_form - ' + error); }
-}
-
-/**
- * Implements hook_field_formatter_view().
- * @param {String} entity_type
- * @param {Object} entity
- * @param {Object} field
- * @param {Object} instance
- * @param {String} langcode
- * @param {Object} items
- * @param {Object} display
- */
-function hook_field_formatter_view(entity_type, entity, field, instance, langcode, items, display) {
-  try {
-    
-    // Use this hook to render a field's content on an entity. Use dpm() to
-    // inspect the incoming arguments. The arguments contain field display
-    // settings from Drupal.
-    
-    //console.log(entity_type);
-    //console.log(entity);
-    //console.log(field);
-    //console.log(instance);
-    //console.log(langcode);
-    //console.log(items);
-    //console.log(display);
-    
-    // Iterate over each item, and place a widget onto the render array.
-    var content = {};
-    for (var delta in items) {
-        if (!items.hasOwnProperty(delta)) { continue; }
-        var item = items[delta];
-        content[delta] = {
-          markup: '<p>' + t('Hello!') + '</p>'
-        };
-    }
-    return content;
-  }
-  catch (error) { console.log('hook_field_formatter_view - ' + error); }
-}
-
-/**
- * Implements hook_field_widget_form().
- * @param {Object} form
- * @param {Object} form_state
- * @param {Object} field
- * @param {Object} instance
- * @param {String} langcode
- * @param {Object} items
- * @param {Number} delta
- * @param {Object} element
- */
-function hook_field_widget_form(form, form_state, field, instance, langcode, items, delta, element) {
-  try {
-    // Use this hook to provide field widgets for form element items. This hook
-    // is called for each delta value on the field. Make modifications to the
-    // items collection using the provided delta value. The object contained
-    // within is a standard DrupalGap Forms API object, so you may assemble the
-    // field (and any children widgets) as needed.
-    
-    // Very simple example, make the widget for the field a text field.
-    items[delta].type = 'textfield';
-  }
-  catch (error) { console.log('hook_field_widget_form - ' + error); }
-}
-
-/**
- * Called after a form element is assembled. Use it to alter a form element.
- */
-//function hook_form_element_alter(form, element, variables) { }
-
-/**
- * Implements hook_entity_post_render_field().
- * Called after drupalgap_entity_render_field() assembles the field content
- * string. Use this to make modifications to the HTML output of the entity's
- * field before it is displayed. The field content will be inside of
- * reference.content, so to make modifications, change reference.content. For
- * more info: http://stackoverflow.com/questions/518000/is-javascript-a-pass-by-reference-or-pass-by-value-language
- */
-function hook_entity_post_render_field(entity, field_name, field, reference) {
-  if (field_name == 'field_my_image') {
-    reference.content += '<h2>' + entity.title + '</h2>';
-  }
-}
-
-/**
- * Implements hook_form_alter().
- * This hook is used to make alterations to existing forms.
- */
-function hook_form_alter(form, form_state, form_id) {
-  // Change the description of the name element on the user login form
-  if (form_id == 'user_login_form') {
-    form.elements['name'].description = t('Enter your login name');
-  }
-}
-
-/**
- * Implements hook_image_path_alter().
- * Called after drupalgap_image_path() assembles the image path. Use this hook
- * to make modifications to the image path. Return the modified path, or false
- * to allow the default path to be generated.
- */
-function hook_image_path_alter(src) { }
-
-/**
- * Implements hook_install().
- * This hook is used by modules that need to execute custom code when the module
- * is loaded. Note, the Drupal.user object is not initialized at this point, and
- * always appears to be an anonymous user.
- */
-function hook_install() { }
-
-/**
- * Implements hook_locale().
- * Used to declare language code .json files that should be loaded by DrupalGap.
- * @see http://drupalgap.org/translate
- */
-function hook_locale() {
-  // Tell DrupalGap to load our custom Spanish and Italian language files
-  // located here:
-  //   app/modules/custom/my_module/locale/es.json
-  //   app/modules/custom/my_module/locale/it.json
-  return ['es', 'it'];
-}
-
-/**
- * Implements hook_menu()
- * This hook is used to declare menu paths for custom pages.
- */
-function hook_menu() {
-  try {
-    var items = {};
-    items['hello_world'] = {
-      title: t('Hello World'),
-      page_callback: 'my_module_hello_world_page'
-    };
-    return items;
-  }
-  catch (error) { console.log('hook_menu - ' + error); }
-}
-
-function hook_mvc_model() {
-  var models = {};
-  return models;
-}
-function hook_mvc_view() {}
-function hook_mvc_controller() {}
-
-/**
- * Implements hook_node_page_view_alter_TYPE().
- * @param {Object} node The fully loaded node object.
- * @param {Object} options The options object, containing the success callback.
- */
-function hook_node_page_view_alter_TYPE(node, options) {
-  try {
-
-    // Use this hook to completely take over the content that is shown when a
-    // user views a certain content type's page within the app. Pass your
-    // content (render array or html string) to the sucess callback provided in
-    // options to have it automatically injected in the page.
-
-    var content = {};
-    content['my_markup'] = {
-      markup: '<p>'+t('Click below to see the node!')+'</p>'
-    };
-    content['my_collapsible'] = {
-      theme: 'collapsible',
-      header: node.title,
-      content: node.content
-    };
-    options.success(content);
-
-  }
-  catch (error) { console.log('hook_node_page_view_alter_TYPE() - ' + error); }
-}
-
-/**
- * Implements hook_page_build().
- * @param {Object} output The page build output object.
- */
-function hook_page_build(output) {
-  try {
-    // Remove all titles from article node pages.
-    if (output.node && output.node.type == 'article') {
-      delete output.title;
-    }
-  }
-  catch (error) { console.log('hook_page_build - ' + error); }
-}
-
-/**
- * Implements hook_preprocess_page().
- * Take action before the page is processed and shown to the user.
- * @param {Object} variables The page variables.
- */
-function hook_preprocess_page(variables) {
-  try {
-
-  }
-  catch (error) {
-    console.log('hook_preprocess_page - ' + error);
-  }
-}
-
-/**
- * Implements hook_post_process_page().
- * Take action after the page is processed and shown to the user.
- * @param {Object} variables The page variables.
- */
-function hook_post_process_page(variables) {
-  try {
-
-  }
-  catch (error) {
-    console.log('hook_post_process_page - ' + error);
-  }
-}
-
-/**
- * Implements hook_views_exposed_filter().
- * @param {Object} form
- * @param {Object} form_state
- * @param {Object} element
- * @param {Object} filter
- * @param {Object} field
- */
-function hook_views_exposed_filter(form, form_state, element, filter, field) {
-  try {
-    
-    // This hook is used to assemble the form element for an exposed filter.
-    // Make modifications to the element JSON object to control how it is used
-    // on the form. The element comes prepopulated with some basic values. The
-    // majority of the data you need to assemble the field should be contained
-    // within the filter and field JSON objects, so use dpm() to insepct them
-    // and assemble your filter's element.
-    
-    //dpm(filter);
-    //dpm(field);
-    
-  }
-  catch (error) { console.log('hook_views_exposed_filter - ' + error); }
-}
-
 /**
  * Implements hook_menu().
  * @return {Object}
@@ -7894,7 +7308,6 @@ function theme_comment(variables) {
   catch (error) { console.log('theme_comment - ' + error); }
 }
 
-
 /**
  * Implements hook_menu().
  * @return {Object}
@@ -8237,136 +7650,6 @@ function contact_personal_form_submit(form, form_state) {
  */
 function contact_personal_form_to_container_id(recipient) {
     return 'contact_personal_form_user_' + recipient;
-}
-
-
-/**
- * Given an entity type and optional bundle, this will return the view mode machine name to use.
- * It defaults to "drupalgap", but can be configured.
- * @param {String} entity_type
- * @param {String} bundle
- * @returns {string}
- * @see http://docs.drupalgap.org/7/Entities/Display_Modes
- */
-function drupalgap_entity_view_mode(entity_type, bundle) {
-  var view_mode = 'drupalgap';
-  if (typeof drupalgap.settings.view_modes !== 'undefined') {
-    if (entity_type && bundle) {
-      if (
-        drupalgap.settings.view_modes[entity_type] &&
-        drupalgap.settings.view_modes[entity_type][bundle] &&
-        drupalgap.settings.view_modes[entity_type][bundle].view_mode
-      ) { view_mode = drupalgap.settings.view_modes[entity_type][bundle].view_mode; }
-    }
-    else if (entity_type) {
-      if (
-          drupalgap.settings.view_modes[entity_type] &&
-          drupalgap.settings.view_modes[entity_type].view_mode
-      ) { view_mode = drupalgap.settings.view_modes[entity_type].view_mode; }
-    }
-  }
-  return view_mode;
-}
-
-/**
- * Given an entity type, id and optional context, this will return a container id to be used
- * when constructing a placeholder to load/display/edit an entity.
- * @param {String} entity_type
- * @param {Number} entity_id
- * @param {String} context An optional context to use, e.g. "edit"
- * @returns {string}
- */
-function drupalgap_get_entity_container_id(entity_type, entity_id, context) {
-  var id = 'dg-entity-container-' + entity_type + '-' + entity_id;
-  if (context) { id += '-' + context; }
-  return id;
-}
-
-/**
- * A page_callback function used to build an empty placeholder for an entity and inline
- * JavaScript to retrieve the entity for display.
- * @param {String} handler
- * @param {String} entity_type
- * @param {Number} entity_id
- * @returns {string}
- */
-function drupalgap_get_entity(handler, entity_type, entity_id, context) {
-  return '<div ' + drupalgap_attributes({
-    id: !context ?
-        drupalgap_get_entity_container_id(entity_type, entity_id) :
-        drupalgap_get_entity_container_id(entity_type, entity_id, context),
-    'class': 'dg-entity-container ' + entity_type
-  }) + '></div>' + drupalgap_jqm_page_event_script_code({
-    jqm_page_event_callback: 'drupalgap_get_entity_pageshow',
-    jqm_page_event_args: JSON.stringify({
-      handler: handler,
-      entity_type: entity_type,
-      entity_id: entity_id
-    })
-  });
-}
-
-/**
- * A pageshow function used to retrieve an entity, pass it along to its handler for rendering,
- * and then inject the handler's render array into the waiting placeholder.
- * @param {Object} options
- */
-function drupalgap_get_entity_pageshow(options) {
-  var context = drupalgap.menu_links[drupalgap_router_path_get()].page_arguments.length == 4 ?
-      drupalgap.menu_links[drupalgap_router_path_get()].page_arguments[3] : null;
-  entity_load(options.entity_type, options.entity_id, {
-    success: function(entity) {
-      var id = drupalgap_get_entity_container_id(options.entity_type, options.entity_id, context);
-      $('#' + id).html(drupalgap_render(window[options.handler](entity))).trigger('create');
-      if (drupalgap.page.options.success) { drupalgap.page.options.success(entity); }
-    },
-    error: drupalgap.page.options.error ? drupalgap.page.options.error : null
-  });
-}
-
-/**
- * A page_callback function used to build an empty placeholder for an entity and inline
- * JavaScript to retrieve the entity for editing.
- * @param {String} handler
- * @param {String} entity_type
- * @param {Number} entity_id
- * @returns {string}
- */
-function drupalgap_get_entity_form(handler, entity_type, entity_id, context) {
-  context = !context ? 'edit' : context;
-  return '<div ' + drupalgap_attributes({
-        id: drupalgap_get_entity_container_id(entity_type, entity_id, context),
-        'class': 'dg-entity-container ' + entity_type
-      }) + '></div>' + drupalgap_jqm_page_event_script_code({
-        jqm_page_event_callback: 'drupalgap_get_entity_form_pageshow',
-        jqm_page_event_args: JSON.stringify({
-          handler: handler,
-          entity_type: entity_type,
-          entity_id: entity_id
-        })
-      });
-}
-
-/**
- * A pageshow function used to retrieve an entity, pass it along to a form builder, and then
- * inject the form into the waiting placeholder.
- * @param {Object} options
- */
-function drupalgap_get_entity_form_pageshow(options) {
-  var context = drupalgap.menu_links[drupalgap_router_path_get()].page_arguments.length == 4 ?
-      drupalgap.menu_links[drupalgap_router_path_get()].page_arguments[3] : 'edit';
-  var done = function(entity) {
-    var id = drupalgap_get_entity_container_id(options.entity_type, options.entity_id, context);
-    $('#' + id).html(drupalgap_get_form(options.handler, entity)).trigger('create');
-    if (drupalgap.page.options.success) { drupalgap.page.options.success(entity); }
-  };
-  if (options.entity_id == 'add') { done({}); }
-  else {
-    entity_load(options.entity_type, options.entity_id, {
-      success: done,
-      error: drupalgap.page.options.error ? drupalgap.page.options.error : null
-    });
-  }
 }
 
 /**
@@ -9423,7 +8706,134 @@ function entity_services_request_pre_postprocess_alter(options, result) {
   }
 }
 
+/**
+ * Given an entity type and optional bundle, this will return the view mode machine name to use.
+ * It defaults to "drupalgap", but can be configured.
+ * @param {String} entity_type
+ * @param {String} bundle
+ * @returns {string}
+ * @see http://docs.drupalgap.org/7/Entities/Display_Modes
+ */
+function drupalgap_entity_view_mode(entity_type, bundle) {
+  var view_mode = 'drupalgap';
+  if (typeof drupalgap.settings.view_modes !== 'undefined') {
+    if (entity_type && bundle) {
+      if (
+        drupalgap.settings.view_modes[entity_type] &&
+        drupalgap.settings.view_modes[entity_type][bundle] &&
+        drupalgap.settings.view_modes[entity_type][bundle].view_mode
+      ) { view_mode = drupalgap.settings.view_modes[entity_type][bundle].view_mode; }
+    }
+    else if (entity_type) {
+      if (
+          drupalgap.settings.view_modes[entity_type] &&
+          drupalgap.settings.view_modes[entity_type].view_mode
+      ) { view_mode = drupalgap.settings.view_modes[entity_type].view_mode; }
+    }
+  }
+  return view_mode;
+}
 
+/**
+ * Given an entity type, id and optional context, this will return a container id to be used
+ * when constructing a placeholder to load/display/edit an entity.
+ * @param {String} entity_type
+ * @param {Number} entity_id
+ * @param {String} context An optional context to use, e.g. "edit"
+ * @returns {string}
+ */
+function drupalgap_get_entity_container_id(entity_type, entity_id, context) {
+  var id = 'dg-entity-container-' + entity_type + '-' + entity_id;
+  if (context) { id += '-' + context; }
+  return id;
+}
+
+/**
+ * A page_callback function used to build an empty placeholder for an entity and inline
+ * JavaScript to retrieve the entity for display.
+ * @param {String} handler
+ * @param {String} entity_type
+ * @param {Number} entity_id
+ * @returns {string}
+ */
+function drupalgap_get_entity(handler, entity_type, entity_id, context) {
+  return '<div ' + drupalgap_attributes({
+    id: !context ?
+        drupalgap_get_entity_container_id(entity_type, entity_id) :
+        drupalgap_get_entity_container_id(entity_type, entity_id, context),
+    'class': 'dg-entity-container ' + entity_type
+  }) + '></div>' + drupalgap_jqm_page_event_script_code({
+    jqm_page_event_callback: 'drupalgap_get_entity_pageshow',
+    jqm_page_event_args: JSON.stringify({
+      handler: handler,
+      entity_type: entity_type,
+      entity_id: entity_id
+    })
+  });
+}
+
+/**
+ * A pageshow function used to retrieve an entity, pass it along to its handler for rendering,
+ * and then inject the handler's render array into the waiting placeholder.
+ * @param {Object} options
+ */
+function drupalgap_get_entity_pageshow(options) {
+  var context = drupalgap.menu_links[drupalgap_router_path_get()].page_arguments.length == 4 ?
+      drupalgap.menu_links[drupalgap_router_path_get()].page_arguments[3] : null;
+  entity_load(options.entity_type, options.entity_id, {
+    success: function(entity) {
+      var id = drupalgap_get_entity_container_id(options.entity_type, options.entity_id, context);
+      $('#' + id).html(drupalgap_render(window[options.handler](entity))).trigger('create');
+      if (drupalgap.page.options.success) { drupalgap.page.options.success(entity); }
+    },
+    error: drupalgap.page.options.error ? drupalgap.page.options.error : null
+  });
+}
+
+/**
+ * A page_callback function used to build an empty placeholder for an entity and inline
+ * JavaScript to retrieve the entity for editing.
+ * @param {String} handler
+ * @param {String} entity_type
+ * @param {Number} entity_id
+ * @returns {string}
+ */
+function drupalgap_get_entity_form(handler, entity_type, entity_id, context) {
+  context = !context ? 'edit' : context;
+  return '<div ' + drupalgap_attributes({
+        id: drupalgap_get_entity_container_id(entity_type, entity_id, context),
+        'class': 'dg-entity-container ' + entity_type
+      }) + '></div>' + drupalgap_jqm_page_event_script_code({
+        jqm_page_event_callback: 'drupalgap_get_entity_form_pageshow',
+        jqm_page_event_args: JSON.stringify({
+          handler: handler,
+          entity_type: entity_type,
+          entity_id: entity_id
+        })
+      });
+}
+
+/**
+ * A pageshow function used to retrieve an entity, pass it along to a form builder, and then
+ * inject the form into the waiting placeholder.
+ * @param {Object} options
+ */
+function drupalgap_get_entity_form_pageshow(options) {
+  var context = drupalgap.menu_links[drupalgap_router_path_get()].page_arguments.length == 4 ?
+      drupalgap.menu_links[drupalgap_router_path_get()].page_arguments[3] : 'edit';
+  var done = function(entity) {
+    var id = drupalgap_get_entity_container_id(options.entity_type, options.entity_id, context);
+    $('#' + id).html(drupalgap_get_form(options.handler, entity)).trigger('create');
+    if (drupalgap.page.options.success) { drupalgap.page.options.success(entity); }
+  };
+  if (options.entity_id == 'add') { done({}); }
+  else {
+    entity_load(options.entity_type, options.entity_id, {
+      success: done,
+      error: drupalgap.page.options.error ? drupalgap.page.options.error : null
+    });
+  }
+}
 /**
  * Given a field name, this will return its field info.
  * @param {String} field_name
@@ -10006,6 +9416,12 @@ function options_field_widget_form(form, form_state, field, instance, langcode, 
             if (instance.default_value && instance.default_value[delta] &&
               typeof instance.default_value[delta].value !== 'undefined') {
                 items[delta].value = instance.default_value[delta].value;
+                if (items[delta].required) {
+                  delete items[delta].options[''];
+                }
+                if (items[delta].item && typeof items[delta].item.value !== 'undefined') {
+                  items[delta].value = items[delta].value = items[delta].item.value;
+                }
             }
           }
         }
@@ -10149,7 +9565,6 @@ function text_field_widget_form(form, form_state, field, instance, langcode, ite
   catch (error) { console.log('text_field_widget_form - ' + error); }
 }
 
-
 /**
  * Implements hook_field_formatter_view().
  */
@@ -10246,7 +9661,6 @@ function file_entity_field_formatter_view(entity_type, entity, field, instance, 
   }
   catch (error) { console.log('file_entity_field_formatter_view - ' + error); }
 }
-
 
 
 // Holds onto the phonegap getPicture success image data. It is keyed by field
@@ -10636,15 +10050,19 @@ function _image_field_form_process(form, form_state, options) {
       var image_file_name = Drupal.user.uid + '_' + d.valueOf() + '.jpg';
 
       // Build the data for the file create resource. If it's private, adjust the filepath.
+      var image_file_path = form.elements[name].field_info_instance.settings.file_directory;
+      if (image_file_path !== "") {
+        image_file_path += "/";
+      }
       var file = {
         file: {
           file: image_phonegap_camera_options[name][0].image,
           filename: image_file_name,
-          filepath: 'public://' + image_file_name
+          filepath: 'public://' + image_file_path + image_file_name
         }
       };
       if (!empty(Drupal.settings.file_private_path)) {
-        file.file.filepath = 'private://' + image_file_name;
+        file.file.filepath = 'private://' + image_file_path + image_file_name;
       }
 
       // Change the loader mode to saving, and save the file.
@@ -10695,7 +10113,6 @@ function image_assemble_form_state_into_field(entity_type, bundle,
     console.log('image_assemble_form_state_into_field - ' + error);
   }
 }
-
 
 /**
  * Implements hook_block_view().
@@ -11150,7 +10567,6 @@ function menu_container_id(menu_name) {
   catch (error) { console.log('menu_container_id - ' + error); }
 }
 
-
 /**
  * The page callback for mvc/collection/list/%/%.
  * @param {String} module
@@ -11498,7 +10914,6 @@ function item_view_page(module, type, item) {
   }
   catch (error) { console.log('item_view_page - ' + error); }
 }
-
 
 /**
  * Given a node, this determines if the current user has access to it. Returns
@@ -11913,7 +11328,6 @@ function node_theme() {
     return { node: { template: 'node' } };
 }
 
-
 /**
  * Implements hook_block_info().
  * @return {Object}
@@ -12149,7 +11563,6 @@ function theme_search_result_node(variables) {
   catch (error) { console.log('theme_search_result_node - ' + error); }
 }
 
-
 /**
  * Given an entity type, this will return its corresponding service resource, or
  * null if the resource doesn't exist.
@@ -12268,7 +11681,6 @@ function drupalgap_services_rss_extract_items(data) {
     console.log('drupalgap_services_rss_extract_items - ' + error);
   }
 }
-
 
 var _system_reload_page = null;
 var _system_reload_messages = null;
@@ -12718,6 +12130,779 @@ function system_logout_block_access_callback(options) {
   }
 }
 
+/**
+ * Determine whether the user has a given privilege. Optionally pass in a user
+ * account JSON object for the second paramater to check that particular
+ * account.
+ * @param {String} string The permission, such as "administer nodes", being
+ *                        checked for.
+ * @return {Boolean}
+ */
+function user_access(string) {
+  try {
+    var account;
+    if (arguments[1]) { account = arguments[1]; }
+    else { account = Drupal.user; }
+    if (account.uid == 1) { return true; }
+    var access = false;
+    for (var index in account.permissions) {
+        if (!account.permissions.hasOwnProperty(index)) { continue; }
+        var object = account.permissions[index];
+        if (object.permission == string) {
+          access = true;
+          break;
+        }
+    }
+    return access;
+  }
+  catch (error) { console.log('user_access - ' + error); }
+}
+
+/**
+ * The access callback for the user/%/edit page.
+ * @param {Object} account
+ * @return {Boolean}
+ */
+function user_edit_access(account) {
+  try {
+    // If the current user is looking at their own account, or if they have the
+    // 'administer users' permission, then they are allowed to edit the account.
+    if (Drupal.user.uid == account.uid || user_access('administer users')) {
+      return true;
+    }
+    return false;
+  }
+  catch (error) { console.log('user_edit_access - ' + error); }
+}
+
+/**
+ * A page call back function to display a simple list of drupal users.
+ * @return {Object}
+ */
+function user_listing() {
+  var content = {};
+  content['user_list'] = {
+    theme: 'view',
+    format: 'ul',
+    path: 'drupalgap/views_datasource/drupalgap_users',
+    row_callback: 'user_listing_row',
+    empty_callback: 'user_listing_empty',
+    attributes: {
+      id: 'user_listing_' + user_password() /* make a random id */
+    }
+  };
+  return content;
+}
+
+/**
+ * The row callback for the simple user listing page.
+ * @param view
+ * @param row
+ * @returns {String}
+ */
+function user_listing_row(view, row) {
+  try {
+    return l(t(row.name), 'user/' + row.uid);
+  }
+  catch (error) { console.log('user_listing_row - ' + error); }
+}
+
+/**
+ * The empty callback for the simple user listing page.
+ * @param view
+ * @returns {String}
+ */
+function user_listing_empty(view) { return t('Sorry, no users were found.'); }
+
+/**
+ * The user logout page callback.
+ * @return {String}
+ */
+function user_logout_callback() {
+  return '<p>' + t('Logging out') + '...</p>';
+}
+
+/**
+ * The user logout pageshow callback. This actually handles the call to the
+ * user logout service resource.
+ */
+function user_logout_pageshow() {
+  try {
+    user_logout({
+      success: function(data) {
+        drupalgap_remove_pages_from_dom();
+        drupalgap_goto(drupalgap.settings.front, { reloadPage:true });
+      }
+    });
+  }
+  catch (error) { console.log('user_logout_pagechange - ' + error); }
+}
+
+/**
+ * Implements hook_menu().
+ * @return {Object}
+ */
+function user_menu() {
+    var items = {
+      'user': {
+        'page_callback': 'user_page'
+      },
+      'user/login': {
+        'title': t('Login'),
+        'page_callback': 'drupalgap_get_form',
+        'page_arguments': ['user_login_form'],
+        options: {reloadPage: true}
+      },
+      'user/logout': {
+        'title': t('Logout'),
+        'page_callback': 'user_logout_callback',
+        'pageshow': 'user_logout_pageshow',
+        options: {reloadPage: true}
+      },
+      'user/register': {
+        'title': t('Register'),
+        'page_callback': 'drupalgap_get_form',
+        'page_arguments': ['user_register_form'],
+        'access_callback': 'user_register_access',
+        options: {reloadPage: true}
+      },
+      'user/%': {
+        title: t('My account'),
+        title_callback: 'user_view_title',
+        title_arguments: [1],
+        page_callback: 'user_view',
+        pageshow: 'user_view_pageshow',
+        page_arguments: [1]
+      },
+      'user/%/view': {
+        'title': t('View'),
+        'type': 'MENU_DEFAULT_LOCAL_TASK',
+        'weight': -10
+      },
+      'user/%/edit': {
+        'title': t('Edit'),
+        'page_callback': 'entity_page_edit',
+        'pageshow': 'entity_page_edit_pageshow',
+        'page_arguments': ['user_profile_form', 'user', 1],
+        'access_callback': 'user_edit_access',
+        'access_arguments': [1],
+        'weight': 0,
+        'type': 'MENU_LOCAL_TASK',
+        options: {reloadPage: true}
+      }
+    };
+    items['user-listing'] = {
+      title: t('Users'),
+      page_callback: 'user_listing',
+      access_arguments: ['access user profiles']
+    };
+    items['user/password'] = {
+      title: t('Request new password'),
+      page_callback: 'drupalgap_get_form',
+      page_arguments: ['user_pass_form']
+    };
+    return items;
+}
+
+/**
+ * Page callback for the user page.
+ * @return {String}
+ */
+function user_page() {
+    // NOTE, this page call back isn't actually used, because the 'user' path
+    // in DrupalGap is redirected to either 'user/login' or e.g.
+    // 'user/123'.
+    return 'user_page()';
+}
+
+/**
+ * Access callback for the user registration page.
+ * @return {Boolean}
+ */
+function user_register_access() {
+  try {
+    switch (drupalgap.site_settings.user_register.toString()) {
+      case '0': // admins only can register
+        return false;
+        break;
+      case '1': // visitors can register
+      case '2': // visitors can register, but admin approval is needed
+        return true;
+        break;
+    }
+  }
+  catch (error) { console.log('user_register_access - ' + error); }
+}
+
+/**
+ * Implements hook_services_postprocess().
+ * @param {Object} options
+ * @param {Object} result
+ */
+function user_services_postprocess(options, result) {
+  try {
+    // Don't process any other services.
+    if (options.service != 'user') { return; }
+    var resources = ['login', 'logout', 'register'];
+    // Only process login, logout and registration.
+    if (!in_array(options.resource, resources) || (arg(0) != 'user' && !in_array(arg(1), resources))) {
+      return;
+    }
+    // If there were any form errors, alert them to the user.
+    if (!result.responseText) { return; }
+    var response = JSON.parse(result.responseText);
+    if ($.isArray(response)) {
+      var msg = '';
+      for (var index in response) {
+          if (!response.hasOwnProperty(index)) { continue; }
+          var message = response[index];
+          msg += t(message) + '\n';
+      }
+      if (msg != '') { drupalgap_alert(msg); }
+    }
+  }
+  catch (error) { console.log('user_services_postprocess - ' + error); }
+}
+
+/**
+ * Implements hook_theme().
+ * @return {Object}
+ */
+function user_theme() {
+    return {
+      user_picture: {
+        template: 'user-picture'
+      },
+      user_profile: {
+        template: 'user-profile'
+      }
+    };
+}
+
+/**
+ * Page callback for user/%.
+ * @param {Number} uid
+ * @return {Object}
+ */
+function user_view(uid) {
+  try {
+    if (uid) {
+      var content = {
+        container: _drupalgap_entity_page_container('user', uid, 'view')
+      };
+      return content;
+    }
+    else { console.log('user_view - No user id provided!'); }
+  }
+  catch (error) { console.log('user_view - ' + error); }
+}
+
+/**
+ * jQM pageshow handler for node/% pages.
+ * @param {Number} uid
+ */
+function user_view_pageshow(uid) {
+  try {
+    user_load(uid, {
+        success: function(account) {
+          // Determine the incoming arguments, and set defaults if necessary.
+          var view_mode = 'full';
+          var langcode = null;
+          if (arguments[1]) { view_mode = arguments[1]; }
+          if (arguments[2]) { langcode = arguments[2]; }
+          if (!langcode) { langcode = language_default(); }
+          if (account) {
+            var build = {
+              'theme': 'user_profile',
+              'account': account,
+              'view_mode': view_mode,
+              'language': langcode,
+              'name': {'markup': account.name},
+              'created': {
+                markup:
+                '<div class="user_profile_history"><h3>' +
+                  t('History') +
+                '</h3>' +
+                '<dl><dt>' + t('Member since') + '</td></dt><dd>' +
+                  (new Date(parseInt(account.created) * 1000)).toDateString() +
+                '</dd></div>'
+              }
+            };
+            // Any content?
+            if (typeof account.content !== 'undefined') {
+              build.content = { markup: account.content };
+            }
+            // Any picture?
+            if (account.picture && account.picture.fid) {
+              build.picture = {
+                'theme': 'image',
+                'path': image_style_url(
+                  drupalgap.site_settings.user_picture_style,
+                  account.picture.uri
+                )
+              };
+            }
+            _drupalgap_entity_page_container_inject(
+              'user', account.uid, 'view', build
+            );
+          }
+        }
+    });
+  }
+  catch (error) { console.log('user_view_pageshow - ' + error); }
+}
+
+/**
+ * Title callback for the user profile view page.
+ * @param {Function} callback
+ * @param {Number} uid
+ */
+function user_view_title(callback, uid) {
+  try {
+    user_load(uid, {
+        success: function(account) {
+          callback.call(null, account.name);
+        }
+    });
+  }
+  catch (error) { console.log('user_view_title - ' + error); }
+}
+
+/**
+ * Given a user role (string), this determines if the current user has the role.
+ * Returns true if the user has the role, false otherwise. You may pass in a
+ * user account object to check against a certain account, instead of the
+ * current user.
+ * @param {String} role
+ * @return {Boolean}
+ */
+function drupalgap_user_has_role(role) {
+  try {
+    var has_role = false;
+    var account = null;
+    if (arguments[1]) { account = arguments[1]; }
+    else { account = Drupal.user; }
+    for (var rid in account.roles) {
+        if (!account.roles.hasOwnProperty(rid)) { continue; }
+        var value = account.roles[rid];
+        if (role == value) {
+          has_role = true;
+          break;
+        }
+    }
+    return has_role;
+  }
+  catch (error) { console.log('drupalgap_user_has_role - ' + error); }
+}
+
+/**
+ * The user login form.
+ * @param {Object} form
+ * @param {Object} form_state
+ * @return {Object}
+ */
+function user_login_form(form, form_state) {
+  try {
+    form.entity_type = 'user';
+    form.bundle = null;
+    form.elements.name = {
+      type: 'textfield',
+      title: t('Username'),
+      title_placeholder: true,
+      required: true,
+      attributes: {
+        autocapitalize: 'none'
+      }
+    };
+    form.elements.pass = {
+      type: 'password',
+      title: t('Password'),
+      title_placeholder: true,
+      required: true,
+      attributes: {
+        onkeypress: "drupalgap_form_onkeypress('" + form.id + "')"
+      }
+    };
+    form.elements.submit = {
+      type: 'submit',
+      value: t('Login')
+    };
+    if (user_register_access()) {
+      form.buttons['create_new_account'] = {
+        title: t('Create new account'),
+        attributes: {
+          onclick: "drupalgap_goto('user/register')"
+        }
+      };
+    }
+    form.buttons['forgot_password'] = {
+      title: t('Request new password'),
+        attributes: {
+          onclick: "drupalgap_goto('user/password')"
+        }
+    };
+    return form;
+  }
+  catch (error) { console.log('user_login_form - ' + error); }
+}
+
+/**
+ * The user login form submit handler.
+ * @param {Object} form
+ * @param {Object} form_state
+ */
+function user_login_form_submit(form, form_state) {
+  try {
+    user_login(form_state.values.name, form_state.values.pass, {
+      success: function(result) {
+        drupalgap_goto(
+            typeof form.action !== 'undefined' ?
+                form.action : drupalgap.settings.front,
+            { reloadPage:true }
+        );
+      }
+    });
+  }
+  catch (error) { console.log('user_login_form_submit - ' + error); }
+}
+
+/**
+ * The user registration form.
+ * @param {Object} form
+ * @param {Object} form_state
+ * @return {Object}
+ */
+function user_register_form(form, form_state) {
+  try {
+    form.entity_type = 'user';
+    form.bundle = null;
+    var description = t('Spaces are allowed; punctuation is not allowed except for periods, hyphens, apostrophes, and underscores.');
+    form.elements.name = {
+      type: 'textfield',
+      title: t('Username'),
+      title_placeholder: true,
+      required: true,
+      description: description
+    };
+    form.elements.mail = {
+      type: 'email',
+      title: t('E-mail address'),
+      title_placeholder: true,
+      required: true
+    };
+    // If e-mail verification is not required, provide password fields and
+    // the confirm e-mail address field.
+    if (!drupalgap.site_settings.user_email_verification) {
+      form.elements.conf_mail = {
+        type: 'email',
+        title: t('Confirm e-mail address'),
+        title_placeholder: true,
+        required: true
+      };
+      form.elements.pass = {
+        type: 'password',
+        title: t('Password'),
+        title_placeholder: true,
+        required: true
+      };
+      form.elements.pass2 = {
+        type: 'password',
+        title: t('Confirm password'),
+        title_placeholder: true,
+        required: true
+      };
+    }
+    // @TODO - instead of a null bundle, it appears drupal uses the bundle 'user' instead.
+    drupalgap_field_info_instances_add_to_form('user', null, form, null);
+    // Add registration messages to form.
+    form.user_register = {
+      'user_mail_register_no_approval_required_body':
+        t('Registration complete!'),
+      'user_mail_register_pending_approval_required_body':
+        t('Registration complete, waiting for administrator approval.'),
+      'user_mail_register_email_verification_body':
+        t('Registration complete, check your e-mail inbox to verify the ' +
+          'account.')
+    };
+    // Set the auto login boolean. This only happens when the site's account
+    // settings require no e-mail verification. Others can stop this from
+    // happening via hook_form_alter().
+    form.auto_user_login = true;
+    // Add submit button.
+    form.elements.submit = {
+      'type': 'submit',
+      'value': t('Create new account')
+    };
+    return form;
+  }
+  catch (error) { console.log('user_register_form - ' + error); }
+}
+
+/**
+ * Define the form's validation function (optional).
+ * @param {Object} form
+ * @param {Object} form_state
+ */
+function user_register_form_validate(form, form_state) {
+  try {
+    // If e-mail verification is not required, make sure the passwords match.
+    if (!drupalgap.site_settings.user_email_verification &&
+      form_state.values.pass != form_state.values.pass2) {
+      drupalgap_form_set_error('pass', t('Passwords do not match!'));
+    }
+    // If there are two e-mail address fields on the form, make sure they match.
+    if (!empty(form_state.values.mail) && !empty(form_state.values.conf_mail) &&
+      form_state.values.mail != form_state.values.conf_mail
+    ) { drupalgap_form_set_error('mail', t('E-mail addresses do not match!')); }
+  }
+  catch (error) {
+    console.log('user_register_form_validate - ' + error);
+  }
+}
+
+/**
+ * The user registration form submit handler.
+ * @param {Object} form
+ * @param {Object} form_state
+ */
+function user_register_form_submit(form, form_state) {
+  try {
+    var account = drupalgap_entity_build_from_form_state(form, form_state);
+    user_register(account, {
+      success: function(data) {
+        var config = form.user_register;
+        var options = {
+          title: t('Registered')
+        };
+        var destination = typeof form.action !== 'undefined' ?
+            form.action : drupalgap.settings.front;
+        // Check if e-mail verification is required or not..
+        if (!drupalgap.site_settings.user_email_verification) {
+          // E-mail verification not needed, if administrator approval is
+          // needed, notify the user, otherwise log them in.
+          if (drupalgap.site_settings.user_register == '2') {
+            drupalgap_alert(
+              config.user_mail_register_pending_approval_required_body,
+              options
+            );
+            drupalgap_goto(destination);
+          }
+          else {
+            drupalgap_alert(
+              config.user_mail_register_no_approval_required_body,
+              options
+            );
+            // If we're automatically logging in do it, otherwise just go to
+            // the front page.
+            if (form.auto_user_login) {
+              user_login(account.name, account.pass, {
+                  success: function(result) {
+                    drupalgap_goto('');
+                  }
+              });
+            }
+            else { drupalgap_goto(destination); }
+          }
+        }
+        else {
+          // E-mail verification needed... notify the user.
+          drupalgap_alert(
+            config.user_mail_register_email_verification_body,
+            options
+          );
+          drupalgap_goto(destination);
+        }
+      },
+      error: function(xhr, status, message) {
+        // If there were any form errors, display them.
+        var msg = _drupalgap_form_submit_response_errors(form, form_state, xhr,
+          status, message);
+        if (msg) { drupalgap_alert(msg); }
+      }
+    });
+  }
+  catch (error) { console.log('user_register_form_submit - ' + error); }
+}
+
+/**
+ * The user profile form.
+ * @param {Object} form
+ * @param {Object} form_state
+ * @param {Object} account
+ * @return {Object}
+ */
+function user_profile_form(form, form_state, account) {
+  try {
+    // Setup form defaults.
+    form.entity_type = 'user';
+    form.bundle = null;
+
+    // Add the entity's core fields to the form.
+    drupalgap_entity_add_core_fields_to_form('user', null, form, account);
+
+    // Add the fields for accounts to the form.
+    drupalgap_field_info_instances_add_to_form('user', null, form, account);
+
+    // If the user can't change their user name, remove access to it.
+    if (!user_access('change own username')) {
+      form.elements['name'].access = false;
+      form.elements['name'].required = false;
+    }
+
+    // If profile pictures are disabled, remove the core field from the form.
+    if (drupalgap.site_settings.user_pictures == 0) {
+      delete form.elements.picture;
+    }
+
+    // Add password fields to the form. We show the current password field only
+    // if the user is editing their account. We show the password and confirm
+    // password field no matter what.
+    if (Drupal.user.uid == account.uid) {
+      form.elements.current_pass = {
+        'title': t('Current password'),
+        'type': 'password',
+        'description': t('Enter your current password to change the E-mail ' +
+          'address or Password.')
+      };
+    }
+    form.elements.pass_pass1 = {
+      'title': t('Password'),
+      'type': 'password'
+    };
+    form.elements.pass_pass2 = {
+      'title': t('Confirm password'),
+      'type': 'password',
+      'description': t('To change the current user password, enter the new ' +
+        'password in both fields.')
+    };
+
+    // Add submit to form.
+    form.elements.submit = {
+      'type': 'submit',
+      'value': t('Save')
+    };
+
+    // Add cancel button to form.
+    form.buttons['cancel'] = {
+      'title': t('Cancel'),
+      attributes: {
+        onclick: 'javascript:drupalgap_back();'
+      }
+    };
+
+    return form;
+  }
+  catch (error) { console.log('user_profile_form - ' + error); }
+}
+
+/**
+ * The user profile form validate handler.
+ * @param {Object} form
+ * @param {Object} form_state
+ */
+function user_profile_form_validate(form, form_state) {
+  try {
+    // If they entered their current password, and entered new passwords, make
+    // sure the new passwords match.
+    if (!empty(form_state.values['current_pass'])) {
+      if (
+        !empty(form_state.values['pass_pass1']) &&
+        !empty(form_state.values['pass_pass2']) &&
+        form_state.values['pass_pass1'] != form_state.values['pass_pass2']
+      ) {
+        drupalgap_form_set_error('pass_pass1', t('Passwords do not match.'));
+      }
+    }
+    // If they didn't enter their current password and entered new passwords,
+    // tell them they need to enter their current password.
+    else if (
+      empty(form_state.values['current_pass']) &&
+      !empty(form_state.values['pass_pass1']) &&
+      !empty(form_state.values['pass_pass2'])
+    ) {
+      drupalgap_form_set_error(
+        'current_pass',
+        t('You must enter your current password to change your password.')
+      );
+    }
+  }
+  catch (error) { console.log('user_profile_form_validate - ' + error); }
+}
+
+/**
+ * The user profile form submit handler.
+ * @param {Object} form
+ * @param {Object} form_state
+ */
+function user_profile_form_submit(form, form_state) {
+  try {
+    var account = drupalgap_entity_build_from_form_state(form, form_state);
+    // If they provided their current password, and their new password, prepare
+    // the account submission values.
+    if (
+      account.current_pass &&
+      !empty(account.pass_pass1) &&
+      !empty(account.pass_pass2)
+    ) {
+      account.pass = account.pass_pass1;
+      delete account.pass_pass1;
+      delete account.pass_pass2;
+    }
+    drupalgap_entity_form_submit(form, form_state, account);
+  }
+  catch (error) { console.log('user_profile_form_submit - ' + error); }
+}
+
+/**
+ * The request new password form.
+ * @param {Object} form
+ * @param {Object} form_state
+ * @return {Object}
+ */
+function user_pass_form(form, form_state) {
+  try {
+    form.elements['name'] = {
+      type: 'textfield',
+      title: t('Username or e-mail address'),
+      required: true,
+      attributes: {
+        onkeypress: "drupalgap_form_onkeypress('" + form.id + "')"
+      }
+    };
+    form.elements['submit'] = {
+      type: 'submit',
+      value: t('E-mail new password')
+    };
+    return form;
+  }
+  catch (error) { console.log('user_pass_form - ' + error); }
+}
+
+/**
+ * The request new password form submission handler.
+ * @param {Object} form
+ * @param {Object} form_state
+ */
+function user_pass_form_submit(form, form_state) {
+  try {
+    user_request_new_password(form_state.values['name'], {
+        success: function(result) {
+          if (result[0]) {
+            var msg =
+              t('Further instructions have been sent to your e-mail address.');
+            drupalgap_set_message(msg);
+          }
+          else {
+            var msg =
+              t('There was a problem sending an e-mail to your address.');
+            drupalgap_set_message(msg, 'warning');
+          }
+          drupalgap_goto('user/login');
+        }
+    });
+  }
+  catch (error) { console.log('user_pass_form_submit - ' + error); }
+}
 
 // Used to hold onto the terms once they've been loaded into a widget, keyed by
 // the form element's id, this allows (views exposed filters particularly) forms
@@ -13688,783 +13873,6 @@ function taxonomy_views_exposed_filter(
   }
   catch (error) { console.log('taxonomy_views_exposed_filter - ' + error); }
 }
-
-/**
- * The user login form.
- * @param {Object} form
- * @param {Object} form_state
- * @return {Object}
- */
-function user_login_form(form, form_state) {
-  try {
-    form.entity_type = 'user';
-    form.bundle = null;
-    form.elements.name = {
-      type: 'textfield',
-      title: t('Username'),
-      title_placeholder: true,
-      required: true,
-      attributes: {
-        autocapitalize: 'none'
-      }
-    };
-    form.elements.pass = {
-      type: 'password',
-      title: t('Password'),
-      title_placeholder: true,
-      required: true,
-      attributes: {
-        onkeypress: "drupalgap_form_onkeypress('" + form.id + "')"
-      }
-    };
-    form.elements.submit = {
-      type: 'submit',
-      value: t('Login')
-    };
-    if (user_register_access()) {
-      form.buttons['create_new_account'] = {
-        title: t('Create new account'),
-        attributes: {
-          onclick: "drupalgap_goto('user/register')"
-        }
-      };
-    }
-    form.buttons['forgot_password'] = {
-      title: t('Request new password'),
-        attributes: {
-          onclick: "drupalgap_goto('user/password')"
-        }
-    };
-    return form;
-  }
-  catch (error) { console.log('user_login_form - ' + error); }
-}
-
-/**
- * The user login form submit handler.
- * @param {Object} form
- * @param {Object} form_state
- */
-function user_login_form_submit(form, form_state) {
-  try {
-    user_login(form_state.values.name, form_state.values.pass, {
-      success: function(result) {
-        drupalgap_goto(
-            typeof form.action !== 'undefined' ?
-                form.action : drupalgap.settings.front,
-            { reloadPage:true }
-        );
-      }
-    });
-  }
-  catch (error) { console.log('user_login_form_submit - ' + error); }
-}
-
-/**
- * The user registration form.
- * @param {Object} form
- * @param {Object} form_state
- * @return {Object}
- */
-function user_register_form(form, form_state) {
-  try {
-    form.entity_type = 'user';
-    form.bundle = null;
-    var description = t('Spaces are allowed; punctuation is not allowed except for periods, hyphens, apostrophes, and underscores.');
-    form.elements.name = {
-      type: 'textfield',
-      title: t('Username'),
-      title_placeholder: true,
-      required: true,
-      description: description
-    };
-    form.elements.mail = {
-      type: 'email',
-      title: t('E-mail address'),
-      title_placeholder: true,
-      required: true
-    };
-    // If e-mail verification is not required, provide password fields and
-    // the confirm e-mail address field.
-    if (!drupalgap.site_settings.user_email_verification) {
-      form.elements.conf_mail = {
-        type: 'email',
-        title: t('Confirm e-mail address'),
-        title_placeholder: true,
-        required: true
-      };
-      form.elements.pass = {
-        type: 'password',
-        title: t('Password'),
-        title_placeholder: true,
-        required: true
-      };
-      form.elements.pass2 = {
-        type: 'password',
-        title: t('Confirm password'),
-        title_placeholder: true,
-        required: true
-      };
-    }
-    // @TODO - instead of a null bundle, it appears drupal uses the bundle 'user' instead.
-    drupalgap_field_info_instances_add_to_form('user', null, form, null);
-    // Add registration messages to form.
-    form.user_register = {
-      'user_mail_register_no_approval_required_body':
-        t('Registration complete!'),
-      'user_mail_register_pending_approval_required_body':
-        t('Registration complete, waiting for administrator approval.'),
-      'user_mail_register_email_verification_body':
-        t('Registration complete, check your e-mail inbox to verify the ' +
-          'account.')
-    };
-    // Set the auto login boolean. This only happens when the site's account
-    // settings require no e-mail verification. Others can stop this from
-    // happening via hook_form_alter().
-    form.auto_user_login = true;
-    // Add submit button.
-    form.elements.submit = {
-      'type': 'submit',
-      'value': t('Create new account')
-    };
-    return form;
-  }
-  catch (error) { console.log('user_register_form - ' + error); }
-}
-
-/**
- * Define the form's validation function (optional).
- * @param {Object} form
- * @param {Object} form_state
- */
-function user_register_form_validate(form, form_state) {
-  try {
-    // If e-mail verification is not required, make sure the passwords match.
-    if (!drupalgap.site_settings.user_email_verification &&
-      form_state.values.pass != form_state.values.pass2) {
-      drupalgap_form_set_error('pass', t('Passwords do not match!'));
-    }
-    // If there are two e-mail address fields on the form, make sure they match.
-    if (!empty(form_state.values.mail) && !empty(form_state.values.conf_mail) &&
-      form_state.values.mail != form_state.values.conf_mail
-    ) { drupalgap_form_set_error('mail', t('E-mail addresses do not match!')); }
-  }
-  catch (error) {
-    console.log('user_register_form_validate - ' + error);
-  }
-}
-
-/**
- * The user registration form submit handler.
- * @param {Object} form
- * @param {Object} form_state
- */
-function user_register_form_submit(form, form_state) {
-  try {
-    var account = drupalgap_entity_build_from_form_state(form, form_state);
-    user_register(account, {
-      success: function(data) {
-        var config = form.user_register;
-        var options = {
-          title: t('Registered')
-        };
-        var destination = typeof form.action !== 'undefined' ?
-            form.action : drupalgap.settings.front;
-        // Check if e-mail verification is required or not..
-        if (!drupalgap.site_settings.user_email_verification) {
-          // E-mail verification not needed, if administrator approval is
-          // needed, notify the user, otherwise log them in.
-          if (drupalgap.site_settings.user_register == '2') {
-            drupalgap_alert(
-              config.user_mail_register_pending_approval_required_body,
-              options
-            );
-            drupalgap_goto(destination);
-          }
-          else {
-            drupalgap_alert(
-              config.user_mail_register_no_approval_required_body,
-              options
-            );
-            // If we're automatically logging in do it, otherwise just go to
-            // the front page.
-            if (form.auto_user_login) {
-              user_login(account.name, account.pass, {
-                  success: function(result) {
-                    drupalgap_goto('');
-                  }
-              });
-            }
-            else { drupalgap_goto(destination); }
-          }
-        }
-        else {
-          // E-mail verification needed... notify the user.
-          drupalgap_alert(
-            config.user_mail_register_email_verification_body,
-            options
-          );
-          drupalgap_goto(destination);
-        }
-      },
-      error: function(xhr, status, message) {
-        // If there were any form errors, display them.
-        var msg = _drupalgap_form_submit_response_errors(form, form_state, xhr,
-          status, message);
-        if (msg) { drupalgap_alert(msg); }
-      }
-    });
-  }
-  catch (error) { console.log('user_register_form_submit - ' + error); }
-}
-
-/**
- * The user profile form.
- * @param {Object} form
- * @param {Object} form_state
- * @param {Object} account
- * @return {Object}
- */
-function user_profile_form(form, form_state, account) {
-  try {
-    // Setup form defaults.
-    form.entity_type = 'user';
-    form.bundle = null;
-
-    // Add the entity's core fields to the form.
-    drupalgap_entity_add_core_fields_to_form('user', null, form, account);
-
-    // Add the fields for accounts to the form.
-    drupalgap_field_info_instances_add_to_form('user', null, form, account);
-
-    // If the user can't change their user name, remove access to it.
-    if (!user_access('change own username')) {
-      form.elements['name'].access = false;
-      form.elements['name'].required = false;
-    }
-
-    // If profile pictures are disabled, remove the core field from the form.
-    if (drupalgap.site_settings.user_pictures == 0) {
-      delete form.elements.picture;
-    }
-
-    // Add password fields to the form. We show the current password field only
-    // if the user is editing their account. We show the password and confirm
-    // password field no matter what.
-    if (Drupal.user.uid == account.uid) {
-      form.elements.current_pass = {
-        'title': t('Current password'),
-        'type': 'password',
-        'description': t('Enter your current password to change the E-mail ' +
-          'address or Password.')
-      };
-    }
-    form.elements.pass_pass1 = {
-      'title': t('Password'),
-      'type': 'password'
-    };
-    form.elements.pass_pass2 = {
-      'title': t('Confirm password'),
-      'type': 'password',
-      'description': t('To change the current user password, enter the new ' +
-        'password in both fields.')
-    };
-
-    // Add submit to form.
-    form.elements.submit = {
-      'type': 'submit',
-      'value': t('Save')
-    };
-
-    // Add cancel button to form.
-    form.buttons['cancel'] = {
-      'title': t('Cancel'),
-      attributes: {
-        onclick: 'javascript:drupalgap_back();'
-      }
-    };
-
-    return form;
-  }
-  catch (error) { console.log('user_profile_form - ' + error); }
-}
-
-/**
- * The user profile form validate handler.
- * @param {Object} form
- * @param {Object} form_state
- */
-function user_profile_form_validate(form, form_state) {
-  try {
-    // If they entered their current password, and entered new passwords, make
-    // sure the new passwords match.
-    if (!empty(form_state.values['current_pass'])) {
-      if (
-        !empty(form_state.values['pass_pass1']) &&
-        !empty(form_state.values['pass_pass2']) &&
-        form_state.values['pass_pass1'] != form_state.values['pass_pass2']
-      ) {
-        drupalgap_form_set_error('pass_pass1', t('Passwords do not match.'));
-      }
-    }
-    // If they didn't enter their current password and entered new passwords,
-    // tell them they need to enter their current password.
-    else if (
-      empty(form_state.values['current_pass']) &&
-      !empty(form_state.values['pass_pass1']) &&
-      !empty(form_state.values['pass_pass2'])
-    ) {
-      drupalgap_form_set_error(
-        'current_pass',
-        t('You must enter your current password to change your password.')
-      );
-    }
-  }
-  catch (error) { console.log('user_profile_form_validate - ' + error); }
-}
-
-/**
- * The user profile form submit handler.
- * @param {Object} form
- * @param {Object} form_state
- */
-function user_profile_form_submit(form, form_state) {
-  try {
-    var account = drupalgap_entity_build_from_form_state(form, form_state);
-    // If they provided their current password, and their new password, prepare
-    // the account submission values.
-    if (
-      account.current_pass &&
-      !empty(account.pass_pass1) &&
-      !empty(account.pass_pass2)
-    ) {
-      account.pass = account.pass_pass1;
-      delete account.pass_pass1;
-      delete account.pass_pass2;
-    }
-    drupalgap_entity_form_submit(form, form_state, account);
-  }
-  catch (error) { console.log('user_profile_form_submit - ' + error); }
-}
-
-/**
- * The request new password form.
- * @param {Object} form
- * @param {Object} form_state
- * @return {Object}
- */
-function user_pass_form(form, form_state) {
-  try {
-    form.elements['name'] = {
-      type: 'textfield',
-      title: t('Username or e-mail address'),
-      required: true,
-      attributes: {
-        onkeypress: "drupalgap_form_onkeypress('" + form.id + "')"
-      }
-    };
-    form.elements['submit'] = {
-      type: 'submit',
-      value: t('E-mail new password')
-    };
-    return form;
-  }
-  catch (error) { console.log('user_pass_form - ' + error); }
-}
-
-/**
- * The request new password form submission handler.
- * @param {Object} form
- * @param {Object} form_state
- */
-function user_pass_form_submit(form, form_state) {
-  try {
-    user_request_new_password(form_state.values['name'], {
-        success: function(result) {
-          if (result[0]) {
-            var msg =
-              t('Further instructions have been sent to your e-mail address.');
-            drupalgap_set_message(msg);
-          }
-          else {
-            var msg =
-              t('There was a problem sending an e-mail to your address.');
-            drupalgap_set_message(msg, 'warning');
-          }
-          drupalgap_goto('user/login');
-        }
-    });
-  }
-  catch (error) { console.log('user_pass_form_submit - ' + error); }
-}
-
-
-/**
- * Determine whether the user has a given privilege. Optionally pass in a user
- * account JSON object for the second paramater to check that particular
- * account.
- * @param {String} string The permission, such as "administer nodes", being
- *                        checked for.
- * @return {Boolean}
- */
-function user_access(string) {
-  try {
-    var account;
-    if (arguments[1]) { account = arguments[1]; }
-    else { account = Drupal.user; }
-    if (account.uid == 1) { return true; }
-    var access = false;
-    for (var index in account.permissions) {
-        if (!account.permissions.hasOwnProperty(index)) { continue; }
-        var object = account.permissions[index];
-        if (object.permission == string) {
-          access = true;
-          break;
-        }
-    }
-    return access;
-  }
-  catch (error) { console.log('user_access - ' + error); }
-}
-
-/**
- * The access callback for the user/%/edit page.
- * @param {Object} account
- * @return {Boolean}
- */
-function user_edit_access(account) {
-  try {
-    // If the current user is looking at their own account, or if they have the
-    // 'administer users' permission, then they are allowed to edit the account.
-    if (Drupal.user.uid == account.uid || user_access('administer users')) {
-      return true;
-    }
-    return false;
-  }
-  catch (error) { console.log('user_edit_access - ' + error); }
-}
-
-/**
- * A page call back function to display a simple list of drupal users.
- * @return {Object}
- */
-function user_listing() {
-  var content = {};
-  content['user_list'] = {
-    theme: 'view',
-    format: 'ul',
-    path: 'drupalgap/views_datasource/drupalgap_users',
-    row_callback: 'user_listing_row',
-    empty_callback: 'user_listing_empty',
-    attributes: {
-      id: 'user_listing_' + user_password() /* make a random id */
-    }
-  };
-  return content;
-}
-
-/**
- * The row callback for the simple user listing page.
- * @param view
- * @param row
- * @returns {String}
- */
-function user_listing_row(view, row) {
-  try {
-    return l(t(row.name), 'user/' + row.uid);
-  }
-  catch (error) { console.log('user_listing_row - ' + error); }
-}
-
-/**
- * The empty callback for the simple user listing page.
- * @param view
- * @returns {String}
- */
-function user_listing_empty(view) { return t('Sorry, no users were found.'); }
-
-/**
- * The user logout page callback.
- * @return {String}
- */
-function user_logout_callback() {
-  return '<p>' + t('Logging out') + '...</p>';
-}
-
-/**
- * The user logout pageshow callback. This actually handles the call to the
- * user logout service resource.
- */
-function user_logout_pageshow() {
-  try {
-    user_logout({
-      success: function(data) {
-        drupalgap_remove_pages_from_dom();
-        drupalgap_goto(drupalgap.settings.front, { reloadPage:true });
-      }
-    });
-  }
-  catch (error) { console.log('user_logout_pagechange - ' + error); }
-}
-
-/**
- * Implements hook_menu().
- * @return {Object}
- */
-function user_menu() {
-    var items = {
-      'user': {
-        'page_callback': 'user_page'
-      },
-      'user/login': {
-        'title': t('Login'),
-        'page_callback': 'drupalgap_get_form',
-        'page_arguments': ['user_login_form'],
-        options: {reloadPage: true}
-      },
-      'user/logout': {
-        'title': t('Logout'),
-        'page_callback': 'user_logout_callback',
-        'pageshow': 'user_logout_pageshow',
-        options: {reloadPage: true}
-      },
-      'user/register': {
-        'title': t('Register'),
-        'page_callback': 'drupalgap_get_form',
-        'page_arguments': ['user_register_form'],
-        'access_callback': 'user_register_access',
-        options: {reloadPage: true}
-      },
-      'user/%': {
-        title: t('My account'),
-        title_callback: 'user_view_title',
-        title_arguments: [1],
-        page_callback: 'user_view',
-        pageshow: 'user_view_pageshow',
-        page_arguments: [1]
-      },
-      'user/%/view': {
-        'title': t('View'),
-        'type': 'MENU_DEFAULT_LOCAL_TASK',
-        'weight': -10
-      },
-      'user/%/edit': {
-        'title': t('Edit'),
-        'page_callback': 'entity_page_edit',
-        'pageshow': 'entity_page_edit_pageshow',
-        'page_arguments': ['user_profile_form', 'user', 1],
-        'access_callback': 'user_edit_access',
-        'access_arguments': [1],
-        'weight': 0,
-        'type': 'MENU_LOCAL_TASK',
-        options: {reloadPage: true}
-      }
-    };
-    items['user-listing'] = {
-      title: t('Users'),
-      page_callback: 'user_listing',
-      access_arguments: ['access user profiles']
-    };
-    items['user/password'] = {
-      title: t('Request new password'),
-      page_callback: 'drupalgap_get_form',
-      page_arguments: ['user_pass_form']
-    };
-    return items;
-}
-
-/**
- * Page callback for the user page.
- * @return {String}
- */
-function user_page() {
-    // NOTE, this page call back isn't actually used, because the 'user' path
-    // in DrupalGap is redirected to either 'user/login' or e.g.
-    // 'user/123'.
-    return 'user_page()';
-}
-
-/**
- * Access callback for the user registration page.
- * @return {Boolean}
- */
-function user_register_access() {
-  try {
-    switch (drupalgap.site_settings.user_register.toString()) {
-      case '0': // admins only can register
-        return false;
-        break;
-      case '1': // visitors can register
-      case '2': // visitors can register, but admin approval is needed
-        return true;
-        break;
-    }
-  }
-  catch (error) { console.log('user_register_access - ' + error); }
-}
-
-/**
- * Implements hook_services_postprocess().
- * @param {Object} options
- * @param {Object} result
- */
-function user_services_postprocess(options, result) {
-  try {
-    // Don't process any other services.
-    if (options.service != 'user') { return; }
-    var resources = ['login', 'logout', 'register'];
-    // Only process login, logout and registration.
-    if (!in_array(options.resource, resources) || (arg(0) != 'user' && !in_array(arg(1), resources))) {
-      return;
-    }
-    // If there were any form errors, alert them to the user.
-    if (!result.responseText) { return; }
-    var response = JSON.parse(result.responseText);
-    if ($.isArray(response)) {
-      var msg = '';
-      for (var index in response) {
-          if (!response.hasOwnProperty(index)) { continue; }
-          var message = response[index];
-          msg += t(message) + '\n';
-      }
-      if (msg != '') { drupalgap_alert(msg); }
-    }
-  }
-  catch (error) { console.log('user_services_postprocess - ' + error); }
-}
-
-/**
- * Implements hook_theme().
- * @return {Object}
- */
-function user_theme() {
-    return {
-      user_picture: {
-        template: 'user-picture'
-      },
-      user_profile: {
-        template: 'user-profile'
-      }
-    };
-}
-
-/**
- * Page callback for user/%.
- * @param {Number} uid
- * @return {Object}
- */
-function user_view(uid) {
-  try {
-    if (uid) {
-      var content = {
-        container: _drupalgap_entity_page_container('user', uid, 'view')
-      };
-      return content;
-    }
-    else { console.log('user_view - No user id provided!'); }
-  }
-  catch (error) { console.log('user_view - ' + error); }
-}
-
-/**
- * jQM pageshow handler for node/% pages.
- * @param {Number} uid
- */
-function user_view_pageshow(uid) {
-  try {
-    user_load(uid, {
-        success: function(account) {
-          // Determine the incoming arguments, and set defaults if necessary.
-          var view_mode = 'full';
-          var langcode = null;
-          if (arguments[1]) { view_mode = arguments[1]; }
-          if (arguments[2]) { langcode = arguments[2]; }
-          if (!langcode) { langcode = language_default(); }
-          if (account) {
-            var build = {
-              'theme': 'user_profile',
-              'account': account,
-              'view_mode': view_mode,
-              'language': langcode,
-              'name': {'markup': account.name},
-              'created': {
-                markup:
-                '<div class="user_profile_history"><h3>' +
-                  t('History') +
-                '</h3>' +
-                '<dl><dt>' + t('Member since') + '</td></dt><dd>' +
-                  (new Date(parseInt(account.created) * 1000)).toDateString() +
-                '</dd></div>'
-              }
-            };
-            // Any content?
-            if (typeof account.content !== 'undefined') {
-              build.content = { markup: account.content };
-            }
-            // Any picture?
-            if (account.picture && account.picture.fid) {
-              build.picture = {
-                'theme': 'image',
-                'path': image_style_url(
-                  drupalgap.site_settings.user_picture_style,
-                  account.picture.uri
-                )
-              };
-            }
-            _drupalgap_entity_page_container_inject(
-              'user', account.uid, 'view', build
-            );
-          }
-        }
-    });
-  }
-  catch (error) { console.log('user_view_pageshow - ' + error); }
-}
-
-/**
- * Title callback for the user profile view page.
- * @param {Function} callback
- * @param {Number} uid
- */
-function user_view_title(callback, uid) {
-  try {
-    user_load(uid, {
-        success: function(account) {
-          callback.call(null, account.name);
-        }
-    });
-  }
-  catch (error) { console.log('user_view_title - ' + error); }
-}
-
-/**
- * Given a user role (string), this determines if the current user has the role.
- * Returns true if the user has the role, false otherwise. You may pass in a
- * user account object to check against a certain account, instead of the
- * current user.
- * @param {String} role
- * @return {Boolean}
- */
-function drupalgap_user_has_role(role) {
-  try {
-    var has_role = false;
-    var account = null;
-    if (arguments[1]) { account = arguments[1]; }
-    else { account = Drupal.user; }
-    for (var rid in account.roles) {
-        if (!account.roles.hasOwnProperty(rid)) { continue; }
-        var value = account.roles[rid];
-        if (role == value) {
-          has_role = true;
-          break;
-        }
-    }
-    return has_role;
-  }
-  catch (error) { console.log('drupalgap_user_has_role - ' + error); }
-}
-
-
 // Holds onto views contexts on a per page basis.
 var _views_embedded_views = {};
 
@@ -14704,6 +14112,20 @@ function views_exposed_form(form, form_state, options) {
             if (filter.options.vocabulary != '') {
               autocomplete.vid = taxonomy_vocabulary_get_vid_from_name(filter.options.vocabulary);
             }
+            $.extend(element, autocomplete, true);
+          }
+          // User ID exposed filter.
+          else if (filter.definition.handler == 'views_handler_filter_user_name') {
+            element.type = 'autocomplete';
+            var autocomplete = {
+              remote: true,
+              custom: true,
+              handler: 'index',
+              entity_type: 'user',
+              value: 'name',
+              label: 'name',
+              filter: 'name'
+            };
             $.extend(element, autocomplete, true);
           }
           else if (element.type == 'select') {
@@ -14951,6 +14373,7 @@ function views_embed_view(path, options) {
               var elem = document.getElementById(options.attributes.id);
               elem.parentElement.removeChild(elem);
             }
+            module_invoke_all("views_embed_view_success", path, options);
           }
           catch (error) {
             console.log('views_embed_view - success - ' + error);
