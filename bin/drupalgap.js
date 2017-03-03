@@ -1,3 +1,4 @@
+/*! drupalgap 2017-01-23 */
 // Initialize the drupalgap json object.
 var drupalgap = drupalgap || drupalgap_init(); // Do not remove this line.
 
@@ -423,7 +424,7 @@ function drupalgap_load_theme() {
       drupalgap_add_js(theme_path);
       // Call the theme's template_info implementation.
       var template_info_function = theme_name + '_info';
-      if (drupalgap_function_exists(template_info_function)) {
+      if (function_exists(template_info_function)) {
         var fn = window[template_info_function];
         drupalgap.theme = fn();
         // For each region in the name, set the 'name' value on the region JSON.
@@ -747,6 +748,8 @@ function drupalgap_format_plural(count, singular, plural) {
  */
 function drupalgap_function_exists(name) {
   try {
+    console.log('WARNING - drupalgap_function_exists() is deprecated. ' +
+      'Use function_exists() instead!');
     return function_exists(name);
   }
   catch (error) { console.log('drupalgap_function_exists - ' + error); }
@@ -948,7 +951,7 @@ function drupalgap_jqm_page_event_fire(event, callback, page_arguments) {
       if (arguments[3]) { key += '-' + arguments[3]; }
     }
     if ($.inArray(key, drupalgap.page.jqm_events) == -1 &&
-      drupalgap_function_exists(callback)) {
+      function_exists(callback)) {
       drupalgap.page.jqm_events.push(key);
       var fn = window[callback];
       if (page_arguments) {
@@ -1857,7 +1860,7 @@ function _theme_autocomplete(list, e, data, autocomplete_id) {
           var field_settings =
             autocomplete.field_info_field.settings;
           var index_resource = field_settings.target_type + '_index';
-          if (!drupalgap_function_exists(index_resource)) {
+          if (!function_exists(index_resource)) {
             console.log('WARNING - _theme_autocomplete - ' +
               index_resource + '() does not exist!'
             );
@@ -2006,7 +2009,7 @@ function _theme_autocomplete_click(id, item, autocomplete_id) {
     // Now fire the item onclick handler, if one was provided.
     if (
       _theme_autocomplete_variables[autocomplete_id].item_onclick &&
-      drupalgap_function_exists(
+      function_exists(
         _theme_autocomplete_variables[autocomplete_id].item_onclick
       )
     ) {
@@ -2081,7 +2084,7 @@ function drupalgap_block_render(region, current_path, block_delta,
     var render_block = false;
     if (
       block_settings.access_callback &&
-      drupalgap_function_exists(block_settings.access_callback)
+      function_exists(block_settings.access_callback)
     ) {
       var fn = window[block_settings.access_callback];
       render_block = fn({
@@ -2785,7 +2788,7 @@ function _drupalgap_form_render_element(form, element) {
     if (module) {
       field_widget_form_function_name = module + '_field_widget_form';
 
-      if (drupalgap_function_exists(field_widget_form_function_name)) {
+      if (function_exists(field_widget_form_function_name)) {
         field_widget_form_function = window[field_widget_form_function_name];
       }
       else {
@@ -2971,12 +2974,19 @@ function _drupalgap_form_render_element(form, element) {
       }
     }
 
-    // Add the item html if it isn't empty.
-    if (item_html != '') { html += item_html; }
-
-    // Add element description.
-    if (element.description && element.type != 'hidden') {
-      html += '<div class="description">' + t(element.description) + '</div>';
+    // Add the item html if it isn't empty. Place the description "before" or "after" the item, exclude it if set
+    // to "none".
+    if (item_html != '') {
+      if (element.description && element.type != 'hidden') {
+        var descriptionDisplay = element.description_display ? element.description_display : 'after';
+        var descriptionHtml = '<div class="description">' + t(element.description) + '</div>';
+        switch (descriptionDisplay) {
+          case 'before': html += descriptionHtml + item_html; break;
+          case 'after': html += item_html + descriptionHtml; break;
+          case 'none': html += item_html; break;
+        }
+      }
+      else { html += item_html; }
     }
 
     // Close the element container.
@@ -3057,7 +3067,7 @@ function _drupalgap_form_render_element_item(form, element, variables, item) {
 
     // Run the item through the theme system if a theme function exists, or try
     // to use the item markup, or let the user know the field isn't supported.
-    if (drupalgap_function_exists('theme_' + theme_function)) {
+    if (function_exists('theme_' + theme_function)) {
       html += theme(theme_function, variables);
     }
     else {
@@ -3272,11 +3282,11 @@ function drupalgap_form_defaults(form_id) {
     form.validate = [];
     form.submit = [];
     var validate_function_name = form.id + '_validate';
-    if (drupalgap_function_exists(validate_function_name)) {
+    if (function_exists(validate_function_name)) {
       form.validate.push(validate_function_name);
     }
     var submit_function_name = form.id + '_submit';
-    if (drupalgap_function_exists(submit_function_name)) {
+    if (function_exists(submit_function_name)) {
       form.submit.push(submit_function_name);
     }
     // Finally, return the form.
@@ -3444,7 +3454,7 @@ function drupalgap_form_load(form_id) {
 
     // The form's call back function will be equal to the form id.
     var function_name = form_id;
-    if (drupalgap_function_exists(function_name)) {
+    if (function_exists(function_name)) {
 
       // Grab the form's function.
       var fn = window[function_name];
@@ -4709,7 +4719,7 @@ function menu_execute_active_handler() {
     // arguments.
     var function_name = drupalgap.menu_links[router_path].page_callback;
     var page_arguments = [];
-    if (drupalgap_function_exists(function_name)) {
+    if (function_exists(function_name)) {
 
       // Grab the page callback function and get ready to build the html.
       var fn = window[function_name];
@@ -4765,7 +4775,7 @@ function menu_execute_active_handler() {
           var jqm_page_event = jqm_page_events[i];
           var jqm_page_event_callback =
             drupalgap.menu_links[router_path][jqm_page_event];
-          if (drupalgap_function_exists(jqm_page_event_callback)) {
+          if (function_exists(jqm_page_event_callback)) {
             var options = {
               'page_id': page_id,
               'jqm_page_event': jqm_page_event,
@@ -6441,11 +6451,13 @@ function theme_controlgroup(variables) {
 function theme_header(variables) {
   try {
     variables.attributes['data-role'] = 'header';
-    if (typeof variables.type === 'undefined') { type = 'h2'; }
+    if (typeof variables.type == 'undefined') {
+      variables.type = 'h2';
+    }
     var typeAttrs = variables.type_attributes ?
       ' ' + drupalgap_attributes(variables.type_attributes) : '';
     var html = '<div ' + drupalgap_attributes(variables.attributes) + '>' +
-      '<' + type + typeAttrs + '>' + variables.text + '</' + type + '></div>';
+      '<' + variables.type + typeAttrs + '>' + variables.text + '</' + variables.type + '></div>';
     return html;
   }
   catch (error) { console.log('theme_header - ' + error); }
@@ -6830,7 +6842,7 @@ function _drupalgap_page_title_pageshow(page_arguments) {
       typeof drupalgap.menu_links[router_path].title_callback !== 'undefined'
     ) {
       var function_name = drupalgap.menu_links[router_path].title_callback;
-      if (drupalgap_function_exists(function_name)) {
+      if (function_exists(function_name)) {
         // Grab the title callback function.
         var fn = window[function_name];
         // Place the internal success callback handler on the front of the
@@ -7921,7 +7933,7 @@ function drupalgap_entity_render_field(entity_type, entity, field_name,
       else { module = field.widget.module; }
     }
     var function_name = module + '_field_formatter_view';
-    if (drupalgap_function_exists(function_name)) {
+    if (function_exists(function_name)) {
       // Grab the field formatter function, then grab the field items
       // from the entity, then call the formatter function and append its result
       // to the entity's content.
@@ -9019,7 +9031,7 @@ function drupalgap_field_info_instances_add_to_form(entity_type, bundle, form, e
           // and then available during hook_field_widget_form() and the form
           // submission process.
           var fn = field.widget.module + '_field_info_instance_add_to_form';
-          if (drupalgap_function_exists(fn)) {
+          if (function_exists(fn)) {
             window[fn](entity_type, bundle, form, entity, form.elements[name]);
           }
 
@@ -9420,7 +9432,7 @@ function options_field_widget_form(form, form_state, field, instance, langcode, 
                   delete items[delta].options[''];
                 }
                 if (items[delta].item && typeof items[delta].item.value !== 'undefined') {
-                  items[delta].value = items[delta].value = items[delta].item.value;
+                  items[delta].value = items[delta].item.value;
                 }
             }
           }
@@ -10346,7 +10358,7 @@ function menu_block_view_pageshow(options) {
           var load_function = load_function_prefix + '_load';
 
           // If the load function exists, load the entity.
-          if (drupalgap_function_exists(load_function)) {
+          if (function_exists(load_function)) {
             var entity_fn = window[load_function];
             // Load the entity. MVC items need to pass along the module name and
             // model type to its load function. All other entity load functions
@@ -14079,7 +14091,7 @@ function views_exposed_form(form, form_state, options) {
           var field = drupalgap_field_info_field(field_name);
           var module = field.module;
           var handler = module + '_views_exposed_filter';
-          if (!drupalgap_function_exists(handler)) {
+          if (!function_exists(handler)) {
             dpm(
               'WARNING: views_exposed_form() - ' + handler + '() must be ' +
               'created to assemble the ' + field.type + ' filter used by ' +
