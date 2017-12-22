@@ -241,7 +241,7 @@ function _drupalgap_deviceready() {
  */
 function _drupalgap_deviceready_options() {
   try {
-    var page_options = arguments[0] ? arguments[0] : {};
+    var pageOptions = arguments[0] ? arguments[0] : {};
     return {
       success: function(result) {
 
@@ -252,11 +252,14 @@ function _drupalgap_deviceready_options() {
         // If there is a hash url present and it can be routed go directly to that page,
         // otherwise go to the app's front page.
         var path = '';
-        if (window.location.hash.indexOf('#') != -1) {
-          var routedPath = drupalgap_get_path_from_page_id(window.location.hash.replace('#', ''));
+        var hash = window.location.hash;
+        if (hash.indexOf('#') != -1) {
+          hash = hash.replace('#', '');
+          _drupalgap_goto_prepare_path(hash, true);
+          var routedPath = drupalgap_get_path_from_page_id(hash);
           if (routedPath) { path = routedPath; }
         }
-        drupalgap_goto(path, page_options);
+        drupalgap_goto(path, pageOptions);
 
       },
       error: function(jqXHR, textStatus, errorThrown) {
@@ -293,7 +296,10 @@ function drupalgap_bootstrap() {
     drupalgap_theme_registry_build();
 
     // Attach device back button handler (Android).
-    document.addEventListener('backbutton', drupalgap_back, false);
+    document.addEventListener('backbutton', function(e) {
+      drupalgap_back();
+      e.preventDefault();
+    }, false);
   }
   catch (error) { console.log('drupalgap_bootstrap - ' + error); }
 }
@@ -346,6 +352,10 @@ function drupalgap_load_modules() {
               Drupal.modules[bundle][module_name].name = module_name;
               module = Drupal.modules[bundle][module_name];
             }
+
+          // If the module is already loaded via the index.html file, just continue.
+          if (typeof module.loaded !== 'undefined' && module.loaded) { continue; }
+
             // Determine module directory.
             var dir = drupalgap_modules_get_bundle_directory(bundle);
             module_base_path = dir + '/' + module.name;
@@ -1267,6 +1277,7 @@ function drupalgap_set_title(title) {
  * @returns {Boolean}
  */
 function drupalgap_loader_enabled() {
+  if (!drupalgap.settings.loader) { drupalgap.settings.loader = {}; }
   return typeof drupalgap.settings.loader.enabled !== 'undefined' ?
       drupalgap.settings.loader.enabled : true;
 }
